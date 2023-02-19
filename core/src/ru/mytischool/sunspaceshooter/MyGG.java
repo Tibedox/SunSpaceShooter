@@ -19,10 +19,6 @@ public class MyGG extends Game {
 	Vector3 touch;
 	BitmapFont font, fontLarge;
 
-	Map<String, String[]> text = new TreeMap<>();
-	public static final int EN = 0, RU = 1;
-	int lang = RU;
-
 	ScreenGame screenGame;
 	ScreenIntro screenIntro;
 	ScreenSettings screenSettings;
@@ -36,7 +32,6 @@ public class MyGG extends Game {
 		camera.setToOrtho(false, SCR_WIDTH, SCR_HEIGHT);
 		touch = new Vector3();
 		generateFont();
-		setAllText();
 
 		screenIntro = new ScreenIntro(this);
 		screenGame = new ScreenGame(this);
@@ -67,19 +62,5 @@ public class MyGG extends Game {
 		parameter.size = 60;
 		fontLarge = generator.generateFont(parameter);
 		generator.dispose();
-	}
-
-	void setAllText(){
-		text.put("Exit", new String[]{"Exit", "Выход"});
-		text.put("EXIT", new String[]{"EXIT", "ВЫХОД"});
-		text.put("KILLS", new String[]{"KILLS: ", "СБИТО: "});
-		text.put("PLAY", new String[]{"PLAY", "ИГРАТЬ"});
-		text.put("SETTINGS", new String[]{"SETTINGS", "НАСТРОЙКИ"});
-		text.put("ABOUT", new String[]{"ABOUT", "ОБ ИГРЕ"});
-		text.put("SOUND ON", new String[]{"SOUND ON", "ЗВУК ВКЛ"});
-		text.put("SOUND OFF", new String[]{"SOUND OFF", "ЗВУК ВЫКЛ"});
-		text.put("MUSIC ON", new String[]{"MUSIC ON", "МУЗЫКА ВКЛ"});
-		text.put("MUSIC OFF", new String[]{"MUSIC OFF", "МУЗЫКА ВЫКЛ"});
-		text.put("LANGUAGE", new String[]{"LANGUAGE EN", "ЯЗЫК РУС"});
 	}
 }

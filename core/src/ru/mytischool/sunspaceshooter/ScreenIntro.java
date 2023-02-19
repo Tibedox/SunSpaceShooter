@@ -17,12 +17,12 @@ public class ScreenIntro implements Screen {
     public ScreenIntro(MyGG myGG) {
         gg = myGG;
 
-        imgBG = new Texture("stars.png");
+        imgBG = new Texture("bg/cosmos01.jpg");
 
-        btnPlay = new TextButton(gg.fontLarge, "PLAY", 650);
-        btnSettings = new TextButton(gg.fontLarge, "SETTINGS", 550);
-        btnAbout = new TextButton(gg.fontLarge, "ABOUT", 450);
-        btnExit = new TextButton(gg.fontLarge, "EXIT", 350);
+        btnPlay = new TextButton(gg.fontLarge, "ИГРАТЬ", 1100);
+        btnSettings = new TextButton(gg.fontLarge, "НАСТРОЙКИ", 1000);
+        btnAbout = new TextButton(gg.fontLarge, "ОБ ИГРЕ", 900);
+        btnExit = new TextButton(gg.fontLarge, "ВЫХОД", 800);
     }
 
     @Override
@@ -57,10 +57,10 @@ public class ScreenIntro implements Screen {
         gg.batch.setProjectionMatrix(gg.camera.combined);
         gg.batch.begin();
         gg.batch.draw(imgBG, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        btnPlay.font.draw(gg.batch, gg.text.get(btnPlay.text)[gg.lang], btnPlay.x, btnPlay.y);
-        btnSettings.font.draw(gg.batch, gg.text.get(btnSettings.text)[gg.lang], btnSettings.x, btnSettings.y);
-        btnAbout.font.draw(gg.batch, gg.text.get(btnAbout.text)[gg.lang], btnAbout.x, btnAbout.y);
-        btnExit.font.draw(gg.batch, gg.text.get(btnExit.text)[gg.lang], btnExit.x, btnExit.y);
+        btnPlay.font.draw(gg.batch, btnPlay.text, btnPlay.x, btnPlay.y);
+        btnSettings.font.draw(gg.batch, btnSettings.text, btnSettings.x, btnSettings.y);
+        btnAbout.font.draw(gg.batch, btnAbout.text, btnAbout.x, btnAbout.y);
+        btnExit.font.draw(gg.batch, btnExit.text, btnExit.x, btnExit.y);
         gg.batch.end();
     }
 
