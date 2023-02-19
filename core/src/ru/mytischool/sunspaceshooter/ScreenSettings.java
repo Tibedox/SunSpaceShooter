@@ -38,13 +38,15 @@ public class ScreenSettings implements Screen {
 
             }
             if(btnSound.hit(gg.touch.x, gg.touch.y)) {
-
+                gg.soundOn = !gg.soundOn;
+                btnSound.setText(gg.soundOn ? "ЗВУК ВКЛ" : "ЗВУК ВЫКЛ");
             }
             if(btnMusic.hit(gg.touch.x, gg.touch.y)) {
-
+                gg.musicOn = !gg.musicOn;
+                btnMusic.setText(gg.musicOn ? "МУЗЫКА ВКЛ" : "МУЗЫКА ВЫКЛ");
             }
             if(btnClearRec.hit(gg.touch.x, gg.touch.y)) {
-
+                btnClearRec.setText("РЕКОРДЫ ОЧИЩЕНЫ");
             }
             if(btnBack.hit(gg.touch.x, gg.touch.y)) {
                 gg.setScreen(gg.screenIntro);
@@ -83,7 +85,7 @@ public class ScreenSettings implements Screen {
 
     @Override
     public void hide() {
-
+        btnClearRec.setText("ОЧИСТКА РЕКОРДОВ");
     }
 
     @Override

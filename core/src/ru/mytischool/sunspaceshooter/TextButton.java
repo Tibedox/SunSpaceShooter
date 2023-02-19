@@ -31,6 +31,13 @@ public class TextButton {
         this.x = SCR_WIDTH/2f - width/2;
     }
 
+    public void setText(String text) {
+        this.text = text;
+        GlyphLayout gl = new GlyphLayout(font, text);
+        width = gl.width;
+        this.x = SCR_WIDTH/2f - width/2;
+    }
+
     boolean hit(float tx, float ty){
         return x < tx && tx < x+width && y-height < ty && ty < y;
     }
