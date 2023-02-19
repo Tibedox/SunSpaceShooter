@@ -4,6 +4,7 @@ import static ru.mytischool.sunspaceshooter.MyGG.SCR_HEIGHT;
 import static ru.mytischool.sunspaceshooter.MyGG.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -11,6 +12,8 @@ public class ScreenSettings implements Screen {
     MyGG gg;
     Texture imgBG;
     TextButton btnName, btnSound, btnMusic, btnClearRec, btnBack;
+    InputKeyboard keyboard;
+    boolean isEnerName;
 
     public ScreenSettings(MyGG myGG) {
         gg = myGG;
@@ -21,35 +24,46 @@ public class ScreenSettings implements Screen {
         btnMusic = new TextButton(gg.fontLarge, "МУЗЫКА ВКЛ", 900);
         btnClearRec = new TextButton(gg.fontLarge, "ОЧИСТКА РЕКОРДОВ", 800);
         btnBack = new TextButton(gg.fontLarge, "НАЗАД", 700);
+
+        keyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT/2, 15);
     }
 
     @Override
     public void show() {
-
+        loadSettings();
+        buttonsReText();
     }
 
     @Override
     public void render(float delta) {
-// обработка касаний экрана
+        // обработка касаний экрана
         if(Gdx.input.justTouched()) {
             gg.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             gg.camera.unproject(gg.touch);
-            if(btnName.hit(gg.touch.x, gg.touch.y)) {
-
-            }
-            if(btnSound.hit(gg.touch.x, gg.touch.y)) {
-                gg.soundOn = !gg.soundOn;
-                btnSound.setText(gg.soundOn ? "ЗВУК ВКЛ" : "ЗВУК ВЫКЛ");
-            }
-            if(btnMusic.hit(gg.touch.x, gg.touch.y)) {
-                gg.musicOn = !gg.musicOn;
-                btnMusic.setText(gg.musicOn ? "МУЗЫКА ВКЛ" : "МУЗЫКА ВЫКЛ");
-            }
-            if(btnClearRec.hit(gg.touch.x, gg.touch.y)) {
-                btnClearRec.setText("РЕКОРДЫ ОЧИЩЕНЫ");
-            }
-            if(btnBack.hit(gg.touch.x, gg.touch.y)) {
-                gg.setScreen(gg.screenIntro);
+            if(isEnerName){
+                if(keyboard.endOfEdit(gg.touch.x, gg.touch.y)){
+                    gg.playerName = keyboard.getText();
+                    buttonsReText();
+                    isEnerName = false;
+                }
+            } else {
+                if (btnName.hit(gg.touch.x, gg.touch.y)) {
+                    isEnerName = true;
+                }
+                if (btnSound.hit(gg.touch.x, gg.touch.y)) {
+                    gg.soundOn = !gg.soundOn;
+                    buttonsReText();
+                }
+                if (btnMusic.hit(gg.touch.x, gg.touch.y)) {
+                    gg.musicOn = !gg.musicOn;
+                    buttonsReText();
+                }
+                if (btnClearRec.hit(gg.touch.x, gg.touch.y)) {
+                    btnClearRec.setText("РЕКОРДЫ ОЧИЩЕНЫ");
+                }
+                if (btnBack.hit(gg.touch.x, gg.touch.y)) {
+                    gg.setScreen(gg.screenIntro);
+                }
             }
         }
 
@@ -65,6 +79,7 @@ public class ScreenSettings implements Screen {
         btnMusic.font.draw(gg.batch, btnMusic.text, btnMusic.x, btnMusic.y);
         btnClearRec.font.draw(gg.batch, btnClearRec.text, btnClearRec.x, btnClearRec.y);
         btnBack.font.draw(gg.batch, btnBack.text, btnBack.x, btnBack.y);
+        if(isEnerName) keyboard.draw(gg.batch);
         gg.batch.end();
     }
 
@@ -86,10 +101,33 @@ public class ScreenSettings implements Screen {
     @Override
     public void hide() {
         btnClearRec.setText("ОЧИСТКА РЕКОРДОВ");
+        saveSettings();
     }
 
     @Override
     public void dispose() {
         imgBG.dispose();
+        keyboard.dispose();
+    }
+
+    void saveSettings(){
+        Preferences pref = Gdx.app.getPreferences("Settings");
+        pref.putBoolean("sound", gg.soundOn);
+        pref.putBoolean("music", gg.musicOn);
+        pref.putString("name", gg.playerName);
+        pref.flush();
+    }
+
+    void loadSettings(){
+        Preferences pref = Gdx.app.getPreferences("Settings");
+        if(pref.contains("sound")) gg.soundOn = pref.getBoolean("sound", true);
+        if(pref.contains("music")) gg.musicOn = pref.getBoolean("music", true);
+        if(pref.contains("name")) gg.playerName = pref.getString("name", "Noname");
+    }
+
+    void buttonsReText(){
+        btnName.setText("ИМЯ: "+gg.playerName);
+        btnSound.setText(gg.soundOn ? "ЗВУК ВКЛ" : "ЗВУК ВЫКЛ");
+        btnMusic.setText(gg.musicOn ? "МУЗЫКА ВКЛ" : "МУЗЫКА ВЫКЛ");
     }
 }
