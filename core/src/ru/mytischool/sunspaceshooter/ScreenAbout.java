@@ -30,7 +30,7 @@ public class ScreenAbout implements Screen {
 
     @Override
     public void render(float delta) {
-// обработка касаний экрана
+        // обработка касаний экрана
         if(Gdx.input.justTouched()) {
             gg.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             gg.camera.unproject(gg.touch);

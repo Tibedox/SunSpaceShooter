@@ -24,6 +24,10 @@ public class MyGG extends Game {
 	ScreenSettings screenSettings;
 	ScreenAbout screenAbout;
 
+	String playerName = "Noname";
+	boolean soundOn = true;
+	boolean musicOn = true;
+
 	@Override
 	public void create () {
 		// создание системных объектов

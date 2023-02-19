@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenIntro implements Screen {
     MyGG gg;
-
     Texture imgBG;
-
     TextButton btnPlay, btnSettings, btnAbout, btnExit;
 
     public ScreenIntro(MyGG myGG) {
