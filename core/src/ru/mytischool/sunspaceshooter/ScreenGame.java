@@ -11,6 +11,7 @@ public class ScreenGame implements Screen {
     MyGG gg;
 
     boolean isGyroscopeAvailable;
+    boolean isAccelerometerAvailable;
 
     Texture imgStars;
     Texture imgShip;
@@ -20,7 +21,8 @@ public class ScreenGame implements Screen {
 
     public ScreenGame(MyGG myGG) {
         gg = myGG;
-        isGyroscopeAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
+        //isGyroscopeAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
+        isAccelerometerAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
         imgStars = new Texture("stars.png");
         imgShip = new Texture("ship.png");
@@ -44,14 +46,15 @@ public class ScreenGame implements Screen {
             gg.camera.unproject(gg.touch);
 
             ship.vx = (gg.touch.x-ship.x)/20;
+        } else if (isAccelerometerAvailable) {
+            int x1 = (int)(Gdx.input.getAccelerometerX()*100);
+            x = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
+            x1 = (int)(Gdx.input.getAccelerometerY()*100);
+            y = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
+            x1 = (int)(Gdx.input.getAccelerometerZ()*100);
+            z = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
         } else if(isGyroscopeAvailable) {
             ship.vx = Gdx.input.getGyroscopeY()*10;
-            int x1 = (int)(Gdx.input.getGyroscopeX()*100);
-            x = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
-            x1 = (int)(Gdx.input.getGyroscopeY()*100);
-            y = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
-            x1 = (int)(Gdx.input.getGyroscopeZ()*100);
-            z = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
         }
 
         // события
