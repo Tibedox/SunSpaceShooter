@@ -17,8 +17,8 @@ public class SpaceObject {
     }
 
     void move(){
-        x+=vx;
-        y+=vy;
+        x += vx;
+        y += vy;
     }
 
     float getX(){
@@ -30,6 +30,6 @@ public class SpaceObject {
     }
 
     boolean outOfScreen(){
-        return x<0-width/2 || x>SCR_WIDTH+width/2 || y<0-height/2 || y>SCR_HEIGHT+height/2;
+        return x<width/2 || x>SCR_WIDTH+width/2 || y<-height/2 || y>SCR_HEIGHT+height/2;
     }
 }
