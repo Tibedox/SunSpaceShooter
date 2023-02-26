@@ -39,7 +39,6 @@ public class ScreenGame implements Screen {
 
     @Override
     public void render(float delta) {
-        String x="", y="", z="";
         // обработка касаний экрана
         if(Gdx.input.isTouched()) {
             gg.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -47,12 +46,7 @@ public class ScreenGame implements Screen {
 
             ship.vx = (gg.touch.x-ship.x)/20;
         } else if (isAccelerometerAvailable) {
-            int x1 = (int)(Gdx.input.getAccelerometerX()*100);
-            x = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
-            x1 = (int)(Gdx.input.getAccelerometerY()*100);
-            y = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
-            x1 = (int)(Gdx.input.getAccelerometerZ()*100);
-            z = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
+            ship.vx = -Gdx.input.getAccelerometerX()*10;
         } else if(isGyroscopeAvailable) {
             ship.vx = Gdx.input.getGyroscopeY()*10;
         }
@@ -67,7 +61,6 @@ public class ScreenGame implements Screen {
         gg.batch.begin();
         for (Stars s: stars) gg.batch.draw(imgStars, s.getX(), s.getY(), s.width, s.height);
         gg.batch.draw(imgShip, ship.getX(), ship.getY(), ship.width, ship.height);
-        gg.font.draw(gg.batch, x+"\n"+y+"\n"+z, 10, 800);
         gg.batch.end();
     }
 
