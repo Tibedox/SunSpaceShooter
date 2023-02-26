@@ -26,11 +26,11 @@ public class ScreenSettings implements Screen {
         btnBack = new TextButton(gg.fontLarge, "НАЗАД", 700);
 
         keyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT/2, 15);
+        loadSettings();
     }
 
     @Override
     public void show() {
-        loadSettings();
         buttonsReText();
     }
 
