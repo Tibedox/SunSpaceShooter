@@ -45,6 +45,7 @@ public class ScreenGame implements Screen {
 
             ship.vx = (gg.touch.x-ship.x)/20;
         } else if(isGyroscopeAvailable) {
+            ship.vx = Gdx.input.getGyroscopeY()*10;
             int x1 = (int)(Gdx.input.getGyroscopeX()*100);
             x = ""+x1/1000+x1/100%10+x1/10%10+x1%10;
             x1 = (int)(Gdx.input.getGyroscopeY()*100);
