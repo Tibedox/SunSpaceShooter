@@ -120,7 +120,9 @@ public class ScreenGame implements Screen {
         gg.batch.setProjectionMatrix(gg.camera.combined);
         gg.batch.begin();
         for(Stars s: stars) gg.batch.draw(imgStars, s.getX(), s.getY(), s.width, s.height);
-        for(Fragment frag: fragments) gg.batch.draw(imgFragment[frag.typeShip][frag.typeFragment], frag.getX(), frag.getY(), frag.width, frag.height);
+        for(Fragment frag: fragments) gg.batch.draw(imgFragment[frag.typeShip][frag.typeFragment],
+                frag.getX(), frag.getY(), frag.width/2, frag.height/2, frag.width, frag.height,
+                1, 1, frag.angle);
         for(Shot shot: shots) gg.batch.draw(imgShot, shot.getX(), shot.getY(), shot.width, shot.height);
         for(Enemy enemy: enemies) gg.batch.draw(imgEnemy, enemy.getX(), enemy.getY(), enemy.width, enemy.height);
         gg.batch.draw(imgShip, ship.getX(), ship.getY(), ship.width, ship.height);
@@ -174,7 +176,7 @@ public class ScreenGame implements Screen {
     }
 
     void spawnFragments(float x, float y, int typeShip){
-        for (int i = 0; i < 250; i++) {
+        for (int i = 0; i < 50; i++) {
             fragments.add(new Fragment(x, y, typeShip));
         }
     }
