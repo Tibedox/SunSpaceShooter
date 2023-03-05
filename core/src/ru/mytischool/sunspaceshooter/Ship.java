@@ -4,7 +4,7 @@ import static ru.mytischool.sunspaceshooter.MyGG.SCR_WIDTH;
 
 public class Ship extends SpaceObject {
     public Ship() {
-        super(SCR_WIDTH/2, 150, 100, 100);
+        super(SCR_WIDTH/2, 100, 100, 100);
     }
 
     @Override

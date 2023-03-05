@@ -21,15 +21,15 @@ public class ScreenGame implements Screen {
     Texture imgShip;
     Texture imgEnemy;
     Texture imgShot;
-    Sound sndShot;
+    Sound sndShot, sndExplosion;
 
     Stars[] stars = new Stars[2];
     Ship ship;
     ArrayList<Enemy> enemies = new ArrayList<>();
     ArrayList<Shot> shots = new ArrayList<>();
 
-    long timeEnemyLastSpawn, timeEnemySpawnInterval = 1200;
-    long timeShotLastSpawn, timeShotSpawnInterval = 400;
+    long timeEnemyLastSpawn, timeEnemySpawnInterval = 1000;
+    long timeShotLastSpawn, timeShotSpawnInterval = 500;
 
     public ScreenGame(MyGG myGG) {
         gg = myGG;
@@ -41,6 +41,7 @@ public class ScreenGame implements Screen {
         imgEnemy = new Texture("enemy2.png");
         imgShot = new Texture("shot.png");
         sndShot = Gdx.audio.newSound(Gdx.files.internal("blaster.wav"));
+        sndExplosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
 
         stars[0] = new Stars(SCR_WIDTH/2, SCR_HEIGHT/2);
         stars[1] = new Stars(SCR_WIDTH/2, SCR_HEIGHT*3/2);
@@ -84,6 +85,15 @@ public class ScreenGame implements Screen {
             shots.get(i).move();
             if(shots.get(i).outOfScreen()){
                 shots.remove(i);
+                break;
+            }
+            for (int j = 0; j < enemies.size(); j++) {
+                if(shots.get(i).overlap(enemies.get(j))){
+                    shots.remove(i);
+                    enemies.remove(j);
+                    if(gg.soundOn) sndExplosion.play();
+                    break;
+                }
             }
         }
 
@@ -124,6 +134,8 @@ public class ScreenGame implements Screen {
         imgShip.dispose();
         imgEnemy.dispose();
         imgShot.dispose();
+        sndShot.dispose();
+        sndExplosion.dispose();
     }
 
     void spawnEnemy(){
