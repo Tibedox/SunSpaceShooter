@@ -36,6 +36,8 @@ public class ScreenGame implements Screen {
     long timeEnemyLastSpawn, timeEnemySpawnInterval = 1000;
     long timeShotLastSpawn, timeShotSpawnInterval = 500;
 
+    int kills;
+
     public ScreenGame(MyGG myGG) {
         gg = myGG;
         isGyroscopeAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
@@ -89,9 +91,10 @@ public class ScreenGame implements Screen {
             enemies.get(i).move();
             if(enemies.get(i).outOfScreen()){
                 enemies.remove(i);
+                if(!ship.isInvisible) killShip();
             }
         }
-        spawnShot();
+        if(!ship.isInvisible) spawnShot();
         for (int i = shots.size()-1; i >= 0; i--) {
             shots.get(i).move();
             if(shots.get(i).outOfScreen()){
@@ -104,6 +107,7 @@ public class ScreenGame implements Screen {
                     shots.remove(i);
                     enemies.remove(j);
                     if(gg.soundOn) sndExplosion.play();
+                    kills++;
                     break;
                 }
             }
@@ -125,7 +129,8 @@ public class ScreenGame implements Screen {
                 1, 1, frag.angle);
         for(Shot shot: shots) gg.batch.draw(imgShot, shot.getX(), shot.getY(), shot.width, shot.height);
         for(Enemy enemy: enemies) gg.batch.draw(imgEnemy, enemy.getX(), enemy.getY(), enemy.width, enemy.height);
-        gg.batch.draw(imgShip, ship.getX(), ship.getY(), ship.width, ship.height);
+        if(!ship.isInvisible) gg.batch.draw(imgShip, ship.getX(), ship.getY(), ship.width, ship.height);
+        gg.font.draw(gg.batch, "Kills: "+kills, 10, SCR_HEIGHT-10);
         gg.batch.end();
     }
 
@@ -179,5 +184,11 @@ public class ScreenGame implements Screen {
         for (int i = 0; i < 50; i++) {
             fragments.add(new Fragment(x, y, typeShip));
         }
+    }
+
+    void killShip(){
+        spawnFragments(ship.x, ship.y, TYPE_SHIP);
+        ship.kill();
+        if(gg.soundOn) sndExplosion.play();
     }
 }

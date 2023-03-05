@@ -7,7 +7,6 @@ public class SpaceObject {
     float x, y;
     float width, height;
     float vx, vy;
-    boolean alive = true;
 
     public SpaceObject(float x, float y, float width, float height) {
         this.x = x;
