@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -21,12 +22,16 @@ public class ScreenGame implements Screen {
     Texture imgShip;
     Texture imgEnemy;
     Texture imgShot;
+    Texture imgAtlasFragment;
+    TextureRegion[][] imgFragment = new TextureRegion[2][4];
     Sound sndShot, sndExplosion;
 
     Stars[] stars = new Stars[2];
     Ship ship;
     ArrayList<Enemy> enemies = new ArrayList<>();
     ArrayList<Shot> shots = new ArrayList<>();
+    ArrayList<Fragment> fragments = new ArrayList<>();
+    static final int TYPE_ENEMY = 0, TYPE_SHIP = 1;
 
     long timeEnemyLastSpawn, timeEnemySpawnInterval = 1000;
     long timeShotLastSpawn, timeShotSpawnInterval = 500;
@@ -40,6 +45,12 @@ public class ScreenGame implements Screen {
         imgShip = new Texture("ship.png");
         imgEnemy = new Texture("enemy2.png");
         imgShot = new Texture("shot.png");
+        imgAtlasFragment = new Texture("fragments.png");
+        for (int i = 0; i < 4; i++) {
+            imgFragment[0][i] = new TextureRegion(imgAtlasFragment, 200*i, 0, 200, 200);
+            imgFragment[1][i] = new TextureRegion(imgAtlasFragment, 200*i, 200, 200, 200);
+        }
+
         sndShot = Gdx.audio.newSound(Gdx.files.internal("blaster.wav"));
         sndExplosion = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
 
@@ -89,11 +100,18 @@ public class ScreenGame implements Screen {
             }
             for (int j = 0; j < enemies.size(); j++) {
                 if(shots.get(i).overlap(enemies.get(j))){
+                    spawnFragments(enemies.get(j).x, enemies.get(j).y, TYPE_ENEMY);
                     shots.remove(i);
                     enemies.remove(j);
                     if(gg.soundOn) sndExplosion.play();
                     break;
                 }
+            }
+        }
+        for (int i = fragments.size()-1; i >= 0; i--) {
+            fragments.get(i).move();
+            if(fragments.get(i).outOfScreen()){
+                fragments.remove(i);
             }
         }
 
@@ -102,6 +120,7 @@ public class ScreenGame implements Screen {
         gg.batch.setProjectionMatrix(gg.camera.combined);
         gg.batch.begin();
         for(Stars s: stars) gg.batch.draw(imgStars, s.getX(), s.getY(), s.width, s.height);
+        for(Fragment frag: fragments) gg.batch.draw(imgFragment[frag.typeShip][frag.typeFragment], frag.getX(), frag.getY(), frag.width, frag.height);
         for(Shot shot: shots) gg.batch.draw(imgShot, shot.getX(), shot.getY(), shot.width, shot.height);
         for(Enemy enemy: enemies) gg.batch.draw(imgEnemy, enemy.getX(), enemy.getY(), enemy.width, enemy.height);
         gg.batch.draw(imgShip, ship.getX(), ship.getY(), ship.width, ship.height);
@@ -134,6 +153,7 @@ public class ScreenGame implements Screen {
         imgShip.dispose();
         imgEnemy.dispose();
         imgShot.dispose();
+        imgAtlasFragment.dispose();
         sndShot.dispose();
         sndExplosion.dispose();
     }
@@ -150,6 +170,12 @@ public class ScreenGame implements Screen {
             shots.add(new Shot(ship.x, ship.y));
             timeShotLastSpawn = TimeUtils.millis();
             if(gg.soundOn) sndShot.play();
+        }
+    }
+
+    void spawnFragments(float x, float y, int typeShip){
+        for (int i = 0; i < 250; i++) {
+            fragments.add(new Fragment(x, y, typeShip));
         }
     }
 }
