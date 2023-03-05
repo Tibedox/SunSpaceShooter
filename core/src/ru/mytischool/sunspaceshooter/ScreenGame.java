@@ -131,6 +131,9 @@ public class ScreenGame implements Screen {
         for(Enemy enemy: enemies) gg.batch.draw(imgEnemy, enemy.getX(), enemy.getY(), enemy.width, enemy.height);
         if(!ship.isInvisible) gg.batch.draw(imgShip, ship.getX(), ship.getY(), ship.width, ship.height);
         gg.font.draw(gg.batch, "Kills: "+kills, 10, SCR_HEIGHT-10);
+        for (int i = 1; i <= ship.lives; i++) {
+            gg.batch.draw(imgShip, SCR_WIDTH-60*i, SCR_HEIGHT-60, 50, 50);
+        }
         gg.batch.end();
     }
 
