@@ -58,6 +58,13 @@ public class Player {
         }
     }
 
+    static void clearTableOfRecords(Player[] players) {
+        for (int i = 0; i < players.length; i++) {
+            players[i].name = "Noname";
+            players[i].kills = 0;
+        }
+    }
+
     static String points(String name, int length){
         int n = length-name.length();
         String s = "";

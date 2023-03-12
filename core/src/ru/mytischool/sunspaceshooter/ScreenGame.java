@@ -54,7 +54,7 @@ public class ScreenGame implements Screen {
         imgShip = new Texture("ship.png");
         imgEnemy = new Texture("enemy2.png");
         imgShot = new Texture("shot.png");
-        imgAtlasFragment = new Texture("fragments.png");
+        imgAtlasFragment = new Texture("atlasfragments.png");
         for (int i = 0; i < 4; i++) {
             imgFragment[0][i] = new TextureRegion(imgAtlasFragment, 200*i, 0, 200, 200);
             imgFragment[1][i] = new TextureRegion(imgAtlasFragment, 200*i, 200, 200, 200);

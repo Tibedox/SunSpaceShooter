@@ -59,6 +59,8 @@ public class ScreenSettings implements Screen {
                     buttonsReText();
                 }
                 if (btnClearRec.hit(gg.touch.x, gg.touch.y)) {
+                    Player.clearTableOfRecords(gg.screenGame.players);
+                    Player.saveTableOfRecords(gg.screenGame.players);
                     btnClearRec.setText("РЕКОРДЫ ОЧИЩЕНЫ");
                 }
                 if (btnBack.hit(gg.touch.x, gg.touch.y)) {
